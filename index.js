@@ -8,20 +8,37 @@ const url = "https://www.githubstatus.com"
 
 
 
-async function load() {
+
+async function Fetch() {
+  const dataFetched = []
   const { data } = await axios.get(url).then((response) => {
     return response
   })
 
-
   const $ = cheerio.load(data)
-
-  const listItems = $("div.components-container").children("div.component-container").text()
-
-  console.log(listItems)
-
+  $("div.component-container").remove()
+  const listItems = $("div.component-container ").find("span.name")
+  listItems = listItems.replaceWith()
 
 
+
+  listItems.each((i, e) => {
+    dataFetched.push($(e).text().replace(/\n/g, '').replace(/\s\s+/g, ' '))
+  })
+  return dataFetched
 }
 
-load()
+let statuses = await Fetch()
+
+
+// statuses = statuses.map((index) => {
+//   const regex = /\s*\n*/g
+
+//   if (index.match(regex)) {
+//     return index
+//   }
+//   return ""
+// }
+// )
+
+console.log("daqui: \n:", statuses)
